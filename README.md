@@ -1,4 +1,4 @@
-# STM32F4-REAL-TIME-AUDIO-PROCESS
+# STM32F4-REAL-TIME-AUDIO-PROCESSING
 This project demonstrates audio signal processing using an STM32 microcontroller, INMP44 microphone, and CS43L22 DAC for audio playback. The system converts PDM (Pulse Density Modulation) signals from the microphone into PCM (Pulse Code Modulation) format, processes the signal, and then plays the audio through headphones.
 
 ## Overview
