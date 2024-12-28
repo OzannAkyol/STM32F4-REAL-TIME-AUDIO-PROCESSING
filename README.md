@@ -24,7 +24,7 @@ For more detailed information, refer to the following resources:
 - [STM32- Device Errata](https://www.st.com/resource/en/errata_sheet/es0182-stm32f405407xx-and-stm32f415417xx-device-errata-stmicroelectronics.pdf)
 - [INMP44 Microphone Datasheet](https://www.alldatasheet.com/datasheet-pdf/pdf/1244625/ETC1/INMP441.html)
 - [CS43L22 DAC Datasheet](https://www.cirrus.com/products/cs43l22/)
-- [STM32 PDM2PCM Library](https://www.st.com/resource/en/user_manual/um2372-stm32cube-pdm2pcm-software-library-for-the-stm32f4f7h7-series-stmicroelectronics.pdf)
+- [ARM DSP LIBARY](https://arm-software.github.io/CMSIS-DSP/main/index.html)
 - [Application Notes](https://www.st.com/resource/en/application_note/dm00380469-interfacing-pdm-digital-microphones-using-stm32-mcus-and-mpus-stmicroelectronics.pdf)
 
 ## System Diagram
