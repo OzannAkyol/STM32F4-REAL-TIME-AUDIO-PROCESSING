@@ -1,0 +1,3 @@
+../tasks/speaker-task/speaker-task-notification.c:10:6:init_speaker_task_notification	2
+../tasks/speaker-task/speaker-task-notification.c:18:6:speaker_task_notify	4
+../tasks/speaker-task/speaker-task-notification.c:31:6:wait_speaker_task_notification	5

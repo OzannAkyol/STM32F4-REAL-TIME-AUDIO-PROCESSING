@@ -1,0 +1,5 @@
+../tasks/microphone-task/microphone_task.c:26:6:microphone_task	24	static
+../tasks/microphone-task/microphone_task.c:49:13:receive_raw_data	16	static
+../tasks/microphone-task/microphone_task.c:57:20:microphone_error_handler	16	static
+../tasks/microphone-task/microphone_task.c:61:6:HAL_I2S_RxHalfCpltCallback	16	static
+../tasks/microphone-task/microphone_task.c:66:6:HAL_I2S_RxCpltCallback	16	static

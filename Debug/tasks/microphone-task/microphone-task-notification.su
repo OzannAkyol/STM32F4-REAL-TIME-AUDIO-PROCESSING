@@ -1,0 +1,3 @@
+../tasks/microphone-task/microphone-task-notification.c:10:6:init_microphone_task_notification	8	static
+../tasks/microphone-task/microphone-task-notification.c:18:6:microphone_task_notify	16	static
+../tasks/microphone-task/microphone-task-notification.c:31:6:wait_microphone_task_notification	16	static

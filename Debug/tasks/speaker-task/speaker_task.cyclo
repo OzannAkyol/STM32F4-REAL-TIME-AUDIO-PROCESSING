@@ -1,0 +1,3 @@
+../tasks/speaker-task/speaker_task.c:25:6:speaker_task	3
+../tasks/speaker-task/speaker_task.c:42:13:play_audio	3
+../tasks/speaker-task/speaker_task.c:53:20:speaker_error_handler	1
