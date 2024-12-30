@@ -91,6 +91,7 @@
     "string": "c",
     "string_view": "c",
     "arm_math.h": "c",
-    "speaker-task-notification.h": "c"
+    "speaker-task-notification.h": "c",
+    "signal-processing-task-notification.h": "c"
   }
 }

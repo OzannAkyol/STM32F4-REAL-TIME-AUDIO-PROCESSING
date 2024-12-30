@@ -1,7 +1,8 @@
 #include <microphone-task/microphone_task.h>
 #include <stdbool.h>
 #include <string.h>
-
+#include "FreeRTOS.h"
+#include "task.h"
 #include "cmsis_os2.h"
 
 #include "gpio.h"
@@ -9,8 +10,6 @@
 
 #include "microphone-task-notification.h"
 #include "signal-processing-task/signal-processing-task-notification.h"
-
-#include "speaker-task/speaker-task-notification.h"
 
 
 uint32_t mic_buffer[MIC_BUFFER_SIZE] = {0};
@@ -21,8 +20,6 @@ static inline void microphone_error_handler(void* arg);
 
 const static NotificationHandlerMicrophoneTask ntf_handler[NUM_OF_MICROPHONE_TASK_FUNCTION];
 
-volatile bool is_data_ready_to_send = false;
-
 void microphone_task(void *argument){
 
 	if(!receive_raw_data(mic_buffer, MIC_BUFFER_SIZE)){
@@ -31,13 +28,12 @@ void microphone_task(void *argument){
 
   for(;;)
   {
-	  if(is_data_ready_to_send){
-     NotificationSignalProcessing_t ntf = {.id = NTF_COMPUTE_FIR_FILTER, .data = mic_buffer};
+	  if(ulTaskNotifyTake(pdFALSE, portMAX_DELAY) != 0){
+		  NotificationSignalProcessing_t ntf = {.id = NTF_COMPUTE_FIR_FILTER, .data = mic_buffer};
 		  if(!signal_processing_task_notify(&ntf)){
 		    microphone_error_handler(NULL);
 		  }
-     is_data_ready_to_send = false;
-   }
+	 }
   }
   
 }
@@ -54,16 +50,15 @@ static bool receive_raw_data(uint32_t* data, uint16_t size){
   return true;
 }
 
+void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s){
+
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+	vTaskNotifyGiveFromISR(microphoneTaskHandle, &xHigherPriorityTaskWoken);
+
+	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+
+}
+
 static inline void microphone_error_handler(void* arg){
   (void)arg;
-}
-//TODO: Complete the half complete interrupt
-void HAL_I2S_RxHalfCpltCallback(I2S_HandleTypeDef *hi2s){
-	;;
-}
-
-//TODO: Complete the full complete interrupt
-void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s){
-	is_data_ready_to_send = true;
-
 }
