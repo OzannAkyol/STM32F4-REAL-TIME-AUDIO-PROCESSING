@@ -11,7 +11,6 @@
 #include "microphone-task-notification.h"
 #include "signal-processing-task/signal-processing-task-notification.h"
 
-
 uint32_t mic_buffer[MIC_BUFFER_SIZE] = {0};
 
 static bool receive_raw_data(uint32_t* data, uint16_t size);
@@ -51,6 +50,8 @@ static bool receive_raw_data(uint32_t* data, uint16_t size){
 }
 
 void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s){
+
+	extern osThreadId_t microphoneTaskHandle;
 
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 	vTaskNotifyGiveFromISR(microphoneTaskHandle, &xHigherPriorityTaskWoken);

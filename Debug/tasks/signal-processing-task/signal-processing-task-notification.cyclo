@@ -1,3 +1,0 @@
-../tasks/signal-processing-task/signal-processing-task-notification.c:10:6:init_signal_processing_task_notification	2
-../tasks/signal-processing-task/signal-processing-task-notification.c:18:6:signal_processing_task_notify	4
-../tasks/signal-processing-task/signal-processing-task-notification.c:31:6:wait_signal_processing_task_notification	5
