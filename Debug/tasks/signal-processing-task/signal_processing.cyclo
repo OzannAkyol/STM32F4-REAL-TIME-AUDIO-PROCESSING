@@ -1,3 +1,0 @@
-../tasks/signal-processing-task/signal_processing.c:38:6:signal_processing_task	2
-../tasks/signal-processing-task/signal_processing.c:55:20:init_FIR_filter	1
-../tasks/signal-processing-task/signal_processing.c:59:13:task_compute_FIR	4

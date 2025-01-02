@@ -1,4 +1,0 @@
-../Core/Src/freertos.c:90:6:MX_FREERTOS_Init	8	static
-../Core/Src/freertos.c:138:6:_microphone_task	16	static
-../Core/Src/freertos.c:153:6:_signal_processing_task	16	static
-../Core/Src/freertos.c:168:6:_speaker_task	16	static
