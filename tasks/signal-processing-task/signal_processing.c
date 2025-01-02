@@ -2,8 +2,9 @@
 #include "gpio.h"
 #include "FreeRTOS.h"
 #include "cmsis_os2.h"
+
 #include "signal-processing-task-notification.h"
-#include "speaker-task/speaker-task-notification.h"
+#include "speaker-task/speaker-task-interface.h"
 #include <string.h>
 
 /* Arm DSP Library includes */
@@ -29,7 +30,7 @@ float32_t fir_filter_output[BLOCK_SIZE] = {0};
 
 static inline void task_led_toggle(GPIO_TypeDef* gpio, uint16_t pin);
 static inline void init_FIR_filter();
-static inline bool task_compute_FIR(NotificationSignalProcessing_t* ntf);
+static bool task_compute_FIR(NotificationSignalProcessingTask_t* ntf);
 
 const static NotificationHandlerSignalProcessing ntf_handler[NUM_OF_SIGNAL_PROCESSING_TASK_FUNCTION] = {
   [NTF_COMPUTE_FIR_FILTER] = task_compute_FIR,
@@ -40,7 +41,7 @@ void signal_processing_task(void *argument){
 
   for(;;)
   {
-    NotificationSignalProcessing_t ntf;
+	  NotificationSignalProcessingTask_t ntf;
     if(wait_signal_processing_task_notification(&ntf)){
       ntf_handler[ntf.id](&ntf);
     }
@@ -56,7 +57,7 @@ static inline void init_FIR_filter(){
 	arm_fir_init_f32(&fir_filter, FIR_FILTER_NUM_TAPS, filter_coeff, filter_state, BLOCK_SIZE);
 }
 
-static bool task_compute_FIR(NotificationSignalProcessing_t* ntf){
+static bool task_compute_FIR(NotificationSignalProcessingTask_t* ntf){
   if(ntf == NULL){
     return false;
   }  
@@ -75,7 +76,7 @@ static bool task_compute_FIR(NotificationSignalProcessing_t* ntf){
   }
 
   NotificationSpeakerTask_t s_ntf = {.id = NTF_SEND_SPEAKER_DATA, .data = tx_data};
-  
+ 
   return (speaker_task_notify(&s_ntf) == true);
 }
 

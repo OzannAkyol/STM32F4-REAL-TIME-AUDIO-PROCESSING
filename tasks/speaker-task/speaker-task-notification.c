@@ -3,8 +3,9 @@
 #include "queue.h"
 #include "speaker_task.h"
 
-#define SPEAKER_TASK_QUEUE_LEN          (16)
+#define IS_VALID_SPEAKER_TASK_NOTIFICATION(ntf)             (ntf < NUM_OF_SPEAKER_TASK_FUNCTION)
 
+#define SPEAKER_TASK_QUEUE_LEN          (16)
 QueueHandle_t speaker_queue;
 
 bool init_speaker_task_notification(void){

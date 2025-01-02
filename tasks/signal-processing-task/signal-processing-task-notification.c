@@ -3,19 +3,20 @@
 #include "queue.h"
 #include "signal_processing.h"
 
-#define SIGNAL_PROCESSING_TASK_QUEUE_LEN          (128)
+#define IS_VALID_SIGNAL_TASK_NOTIFICATION(ntf) (ntf < NUM_OF_SIGNAL_PROCESSING_TASK_FUNCTION)
 
+#define SIGNAL_PROCESSING_TASK_QUEUE_LEN          (128)
 QueueHandle_t signal_processing_queue;
 
 bool init_signal_processing_task_notification(void){
-    signal_processing_queue = xQueueCreate(SIGNAL_PROCESSING_TASK_QUEUE_LEN, sizeof(NotificationSignalProcessing_t));
+    signal_processing_queue = xQueueCreate(SIGNAL_PROCESSING_TASK_QUEUE_LEN, sizeof(NotificationSignalProcessingTask_t));
     if(signal_processing_queue == NULL){
         return false;
     }
     return true;
 }
 
-bool signal_processing_task_notify(NotificationSignalProcessing_t* ntf){
+bool signal_processing_task_notify(NotificationSignalProcessingTask_t* ntf){
     if(ntf == NULL || signal_processing_queue == NULL){
         return false;
     }
@@ -28,7 +29,7 @@ bool signal_processing_task_notify(NotificationSignalProcessing_t* ntf){
 
 }
 
-bool wait_signal_processing_task_notification(NotificationSignalProcessing_t* ntf){
+bool wait_signal_processing_task_notification(NotificationSignalProcessingTask_t* ntf){
     
     if(ntf == NULL || signal_processing_queue == NULL){
         return false;

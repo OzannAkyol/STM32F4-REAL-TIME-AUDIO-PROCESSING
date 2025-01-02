@@ -9,7 +9,7 @@
 #include "i2s.h"
 
 #include "microphone-task-notification.h"
-#include "signal-processing-task/signal-processing-task-notification.h"
+#include "signal-processing-task/signal-processing-task-interface.h"
 
 uint32_t mic_buffer[MIC_BUFFER_SIZE] = {0};
 
@@ -28,13 +28,12 @@ void microphone_task(void *argument){
   for(;;)
   {
 	  if(ulTaskNotifyTake(pdFALSE, portMAX_DELAY) != 0){
-		  NotificationSignalProcessing_t ntf = {.id = NTF_COMPUTE_FIR_FILTER, .data = mic_buffer};
+		  NotificationSignalProcessingTask_t ntf = {.id = NTF_COMPUTE_FIR_FILTER, .data = mic_buffer};
 		  if(!signal_processing_task_notify(&ntf)){
 		    microphone_error_handler(NULL);
 		  }
 	 }
-  }
-  
+  } 
 }
 
 static inline void task_led_toggle(GPIO_TypeDef* gpio, uint16_t pin){
@@ -50,7 +49,7 @@ static bool receive_raw_data(uint32_t* data, uint16_t size){
 }
 
 void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s){
-
+	
 	extern osThreadId_t microphoneTaskHandle;
 
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
