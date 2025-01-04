@@ -1,27 +1,24 @@
 #include "signal-processing-task-notification.h"
 #include "FreeRTOS.h"
-#include "queue.h"
+#include "stream_buffer.h"
 #include "signal_processing.h"
 
-#define IS_VALID_SIGNAL_TASK_NOTIFICATION(ntf) (ntf < NUM_OF_SIGNAL_PROCESSING_TASK_FUNCTION)
-
-#define SIGNAL_PROCESSING_TASK_QUEUE_LEN          (128)
-QueueHandle_t signal_processing_queue;
+StreamBufferHandle_t signal_processing_stream_buffer;
 
 bool init_signal_processing_task_notification(void){
-    signal_processing_queue = xQueueCreate(SIGNAL_PROCESSING_TASK_QUEUE_LEN, sizeof(NotificationSignalProcessingTask_t));
-    if(signal_processing_queue == NULL){
+    signal_processing_stream_buffer = xStreamBufferCreate(sizeof(NotificationSignalProcessing_t), 1);
+    if(signal_processing_stream_buffer == NULL){
         return false;
     }
     return true;
 }
 
-bool signal_processing_task_notify(NotificationSignalProcessingTask_t* ntf){
-    if(ntf == NULL || signal_processing_queue == NULL){
+bool signal_processing_task_notify(NotificationSignalProcessing_t* ntf){
+    if(ntf == NULL || signal_processing_stream_buffer == NULL){
         return false;
     }
 
-    if(xQueueSend(signal_processing_queue, (void*)ntf, 0) == pdPASS){
+    if(xStreamBufferSend(signal_processing_stream_buffer, (void*)ntf, sizeof(NotificationSignalProcessing_t), 0) == pdPASS){
         return true;
     }
 
@@ -29,13 +26,13 @@ bool signal_processing_task_notify(NotificationSignalProcessingTask_t* ntf){
 
 }
 
-bool wait_signal_processing_task_notification(NotificationSignalProcessingTask_t* ntf){
+bool wait_signal_processing_task_notification(NotificationSignalProcessing_t* ntf){
     
-    if(ntf == NULL || signal_processing_queue == NULL){
+    if(ntf == NULL || signal_processing_stream_buffer == NULL){
         return false;
     }
 
-    if(xQueueReceive(signal_processing_queue, (void*)ntf, portMAX_DELAY) == pdPASS){
+    if(xStreamBufferReceive(signal_processing_stream_buffer, (void*)ntf, sizeof(NotificationSignalProcessing_t), portMAX_DELAY) == pdPASS){
         if(IS_VALID_SIGNAL_TASK_NOTIFICATION(ntf->id)){
             return true;
         }
