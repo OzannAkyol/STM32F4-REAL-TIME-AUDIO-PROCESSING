@@ -9,7 +9,7 @@
 
 void signal_processing_task(void *argument);
 
-extern float32_t fir_filter_output[BLOCK_SIZE];
+
 /*alternative to 32 coefficient array
 
   -0.0007,  0.0002, -0.0002,  0.0000,  0.0001, -0.0004,  0.0006, -0.0008,  0.0009, -0.0008,  0.0006, -0.0003, -0.0002,  0.0007, -0.0012,  0.0016, -0.0018,  0.0016,
