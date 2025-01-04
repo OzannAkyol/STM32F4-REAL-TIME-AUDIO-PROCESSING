@@ -25,8 +25,8 @@ const float32_t filter_coeff[FIR_FILTER_NUM_TAPS] = {
 	    -9461788000282.734f, 12065738670392.541f, -5434004720114.127f
 		};
 
-float32_t fir_filter_input[BLOCK_SIZE] = {0};
-float32_t fir_filter_output[BLOCK_SIZE] = {0};
+static float32_t fir_filter_input[BLOCK_SIZE] = {0};
+static float32_t fir_filter_output[BLOCK_SIZE] = {0};
 
 static inline void task_led_toggle(GPIO_TypeDef* gpio, uint16_t pin);
 static inline void init_FIR_filter();
