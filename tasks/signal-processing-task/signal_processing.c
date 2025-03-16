@@ -12,16 +12,12 @@
 
 /* Arm DSP Library definitions */
 arm_fir_instance_f32 fir_filter;
-float32_t filter_state[FIR_FILTER_NUM_TAPS + BLOCK_SIZE + 1];
+float32_t filter_state[FIR_FILTER_NUM_TAPS + BLOCK_SIZE - 1];
 const float32_t filter_coeff[FIR_FILTER_NUM_TAPS] = {
-	    -5434004720114.127f, 12065738670392.541f, -9461788000282.734f, -51024160050.35226f,
-	    9033162239319.658f, -10804883483809.857f, 4440219822069.845f, 4729386326906.01f,
-	    -9649417334845.072f, 7176856349671.372f, 198767825378.1905f, -6939204557391.346f,
-	    8127831822003.124f, -2554926454615.1753f, -5663785040842.298f, 9574141392421.361f,
-	    -5663785040842.298f, -2554926454615.1753f, 8127831822003.124f, -6939204557391.346f,
-	    198767825378.1905f, 7176856349671.372f, -9649417334845.072f, 4729386326906.01f,
-	    4440219822069.845f, -10804883483809.857f, 9033162239319.658f, -51024160050.35226f,
-	    -9461788000282.734f, 12065738670392.541f, -5434004720114.127f
+		  -0.0018225230f, -0.0015879294f, +0.0000000000f, +0.0036977508f, +0.0080754303f, +0.0085302217f, -0.0000000000f, -0.0173976984f,
+		  -0.0341458607f, -0.0333591565f, +0.0000000000f, +0.0676308395f, +0.1522061835f, +0.2229246956f, +0.2504960933f, +0.2229246956f,
+		  +0.1522061835f, +0.0676308395f, +0.0000000000f, -0.0333591565f, -0.0341458607f, -0.0173976984f, -0.0000000000f, +0.0085302217f,
+		  +0.0080754303f, +0.0036977508f, +0.0000000000f, -0.0015879294f, -0.0018225230f
 		};
 
 static float32_t fir_filter_input[BLOCK_SIZE] = {0};
@@ -61,20 +57,11 @@ static bool task_compute_FIR(NotificationSignalProcessing_t* ntf){
     return false;
   }  
 
-  uint32_t* uint32_data = (uint32_t*)ntf->data;
-  uint32_t tx_data[BLOCK_SIZE];
-
-  for(size_t i = 0; i < BLOCK_SIZE; ++i){
-	  fir_filter_input[i] = (float32_t)(int32_t)((uint32_data[i] >> 8));
-  }
+  memcpy(fir_filter_input, ntf->data, BLOCK_SIZE * sizeof(float32_t));
 
   arm_fir_f32(&fir_filter, fir_filter_input, fir_filter_output, BLOCK_SIZE);
 
-  for(size_t i = 0; i < BLOCK_SIZE; ++i){
-	  tx_data[i] = (uint32_t)((int32_t)(fir_filter_output[i] ) << 8);
-  }
-
-  NotificationSpeakerTask_t s_ntf = {.id = NTF_SEND_SPEAKER_DATA, .data = tx_data};
+  NotificationSpeakerTask_t s_ntf = {.id = NTF_SEND_SPEAKER_DATA, .data = fir_filter_output};
   
   return (speaker_task_notify(&s_ntf) == true);
 }
