@@ -60,7 +60,7 @@ const osThreadAttr_t microphoneTask_attributes = {
 osThreadId_t signalProcessHandle;
 const osThreadAttr_t signalProcess_attributes = {
   .name = "signalProcess",
-  .stack_size = 128 * 16,
+  .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for speakerTask */
