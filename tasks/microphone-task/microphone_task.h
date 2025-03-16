@@ -5,7 +5,7 @@
 #include "stdint.h"
 
 #define MICROPHONE_LED_PIN      GPIO_PIN_12
-#define MIC_BUFFER_SIZE         (256)
+#define MIC_BUFFER_SIZE         (32)
 
 void microphone_task(void *argument);
 

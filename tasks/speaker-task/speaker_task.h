@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #define SPEAKER_LED_PIN         GPIO_PIN_13
-#define SPEAKER_BUFFER_SIZE		(256)
+#define SPEAKER_BUFFER_SIZE		(32)
 
 void speaker_task(void *argument);
 
