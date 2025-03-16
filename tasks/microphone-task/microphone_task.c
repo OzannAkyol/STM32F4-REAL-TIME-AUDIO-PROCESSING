@@ -19,6 +19,8 @@ static inline void microphone_error_handler(void* arg);
 
 const static NotificationHandlerMicrophoneTask ntf_handler[NUM_OF_MICROPHONE_TASK_FUNCTION];
 
+extern osThreadId_t microphoneTaskHandle;
+
 void microphone_task(void *argument){
 
 	if(!receive_raw_data(mic_buffer, MIC_BUFFER_SIZE)){
@@ -50,9 +52,6 @@ static bool receive_raw_data(uint32_t* data, uint16_t size){
 }
 
 void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s){
-
-	extern osThreadId_t microphoneTaskHandle;
-
 	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 	vTaskNotifyGiveFromISR(microphoneTaskHandle, &xHigherPriorityTaskWoken);
 
