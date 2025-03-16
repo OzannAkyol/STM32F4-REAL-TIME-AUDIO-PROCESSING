@@ -3,13 +3,7 @@
 #include "stream_buffer.h"
 #include "speaker_task.h"
 
-<<<<<<< HEAD
-#define SPEAKER_TASK_QUEUE_LEN          (16)
-
-QueueHandle_t speaker_queue;
-=======
 StreamBufferHandle_t speaker_task_stream_buffer;
->>>>>>> cf3cf2d (feat: change notification structure by replacing xQueue and xStreamBuffer)
 
 bool init_speaker_task_notification(void){
     speaker_task_stream_buffer = xStreamBufferCreate(sizeof(NotificationSpeakerTask_t), 1);
